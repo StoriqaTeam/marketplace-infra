@@ -1,0 +1,48 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: apache
+  labels:
+    stack: blog
+    app: apache
+spec:
+  selector:
+    matchLabels:
+      app: apache
+  template:
+    metadata:
+      name: apache
+      labels:
+        app: apache
+        stack: blog
+    spec:
+      imagePullSecrets:
+      - name: stq
+      containers:
+      - name: apache
+        image: storiqateam/wordpress:20181212
+        ports:
+        - name: http
+          containerPort: 80
+        - name: https
+          containerPort: 443
+        volumeMounts:
+        - name: wpdata
+          mountPath: /var/www/html/blog
+        readinessProbe:
+          httpGet:
+            path: /blog
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        livenessProbe:
+          httpGet:
+            path: /blog
+            port: 80
+          initialDelaySeconds: 60
+          periodSeconds: 30
+      volumes:
+      - name: wpdata
+        persistentVolumeClaim:
+          claimName: wpdata
+

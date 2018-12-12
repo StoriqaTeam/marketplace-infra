@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: apache
+  labels:
+    stack: blog
+spec:
+  selector:
+    stack: blog
+    app: apache
+  ports:
+  - name: http
+    port: 80
+  - name: https
+    port: 443
