@@ -1,0 +1,48 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: selling-guides-apache
+  labels:
+    stack: selling-guides
+    app: apache
+spec:
+  selector:
+    matchLabels:
+      app: apache
+  template:
+    metadata:
+      name: selling-guides-apache
+      labels:
+        app: apache
+        stack: selling-guides
+    spec:
+      imagePullSecrets:
+      - name: stq
+      containers:
+      - name: apache
+        image: storiqateam/wordpress:selling-guides
+        ports:
+        - name: http
+          containerPort: 80
+        - name: https
+          containerPort: 443
+        volumeMounts:
+        - name: wpdata
+          mountPath: /var/www/html/selling-guides
+        readinessProbe:
+          httpGet:
+            path: /selling-guides
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        livenessProbe:
+          httpGet:
+            path: /selling-guides
+            port: 80
+          initialDelaySeconds: 60
+          periodSeconds: 30
+      volumes:
+      - name: wpdata
+        persistentVolumeClaim:
+          claimName: selling-guides
+
