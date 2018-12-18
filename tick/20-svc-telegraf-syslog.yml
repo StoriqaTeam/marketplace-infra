@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: telegraf-syslog
+spec:
+  selector:
+    app: monitoring-poll-telegraf
+  ports:
+  - name: syslog
+    protocol: UDP
+    port: 6514
