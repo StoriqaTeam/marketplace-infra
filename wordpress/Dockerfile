@@ -1,5 +1,7 @@
 FROM php:7.3-apache-stretch
 
+ARG subpath=blog
+
 RUN openssl req \
     -x509 \
     -newkey rsa:4096 \
@@ -21,5 +23,5 @@ RUN openssl req \
   && docker-php-ext-install mysqli \
   && docker-php-ext-install pdo_mysql
 
-COPY blog /var/www/html/blog
-COPY apache2 /etc/apache2
+COPY $subpath/wordpress /var/www/html/$subpath
+COPY $subpath/apache2 /etc/apache2

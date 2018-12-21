@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: apache
+  name: blog-apache
   labels:
     stack: blog
     app: apache
@@ -11,7 +11,7 @@ spec:
       app: apache
   template:
     metadata:
-      name: apache
+      name: blog-apache
       labels:
         app: apache
         stack: blog
@@ -20,7 +20,7 @@ spec:
       - name: stq
       containers:
       - name: apache
-        image: storiqateam/wordpress:20181212
+        image: storiqateam/wordpress
         ports:
         - name: http
           containerPort: 80
@@ -44,5 +44,5 @@ spec:
       volumes:
       - name: wpdata
         persistentVolumeClaim:
-          claimName: wpdata
+          claimName: blog
 

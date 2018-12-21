@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: wpdata
+  name: blog
   labels:
     stack: blog
 spec:

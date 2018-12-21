@@ -1,7 +1,7 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: apache
+  name: blog
   labels:
     stack: blog
 spec:
