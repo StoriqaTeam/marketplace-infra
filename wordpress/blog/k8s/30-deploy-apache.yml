@@ -8,6 +8,7 @@ metadata:
 spec:
   selector:
     matchLabels:
+      stack: blog
       app: apache
   template:
     metadata:
@@ -20,7 +21,7 @@ spec:
       - name: stq
       containers:
       - name: apache
-        image: storiqateam/wordpress
+        image: storiqateam/wordpress:blog
         ports:
         - name: http
           containerPort: 80
@@ -29,6 +30,9 @@ spec:
         volumeMounts:
         - name: wpdata
           mountPath: /var/www/html/blog
+        - name: phpconf
+          mountPath: /usr/local/etc/php/php.ini
+          subPath: php.ini
         readinessProbe:
           httpGet:
             path: /blog
@@ -45,4 +49,7 @@ spec:
       - name: wpdata
         persistentVolumeClaim:
           claimName: blog
+      - name: phpconf
+        configMap:
+          name: selling-guides-php
 

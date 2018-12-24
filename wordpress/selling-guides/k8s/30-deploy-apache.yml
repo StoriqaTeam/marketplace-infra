@@ -29,6 +29,9 @@ spec:
         volumeMounts:
         - name: wpdata
           mountPath: /var/www/html/selling-guides
+        - name: phpconf
+          mountPath: /usr/local/etc/php/php.ini
+          subPath: php.ini
         readinessProbe:
           httpGet:
             path: /selling-guides
@@ -45,4 +48,7 @@ spec:
       - name: wpdata
         persistentVolumeClaim:
           claimName: selling-guides
+      - name: phpconf
+        configMap:
+          name: selling-guides-php
 
