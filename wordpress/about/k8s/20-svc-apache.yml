@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: about-apache
+  labels:
+    stack: about
+spec:
+  selector:
+    stack: about
+    app: apache
+  ports:
+  - name: http
+    port: 80
+  - name: https
+    port: 443

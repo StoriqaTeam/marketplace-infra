@@ -1,0 +1,56 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: about-apache
+  labels:
+    stack: about
+    app: apache
+spec:
+  selector:
+    matchLabels:
+      app: apache
+  template:
+    metadata:
+      name: about-apache
+      labels:
+        app: apache
+        stack: about
+    spec:
+      imagePullSecrets:
+      - name: stq
+      containers:
+      - name: apache
+        image: storiqateam/wordpress:about
+        ports:
+        - name: http
+          containerPort: 80
+        - name: https
+          containerPort: 443
+        volumeMounts:
+        - name: wpdata
+          mountPath: /var/www/html/about
+        - name: phpconf
+          mountPath: /usr/local/etc/php/php.ini
+          subPath: php.ini
+        readinessProbe:
+          httpGet:
+            path: /about/
+            port: 443
+            sheme: HTTPS
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        livenessProbe:
+          httpGet:
+            path: /about/
+            port: 443
+            #sheme: HTTPS
+          initialDelaySeconds: 60
+          periodSeconds: 30
+      volumes:
+      - name: wpdata
+        persistentVolumeClaim:
+          claimName: about
+      - name: phpconf
+        configMap:
+          name: about-php
+

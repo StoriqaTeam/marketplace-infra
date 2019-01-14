@@ -10,7 +10,6 @@ RUN openssl req \
     -subj '/CN=*' \
     -keyout /etc/ssl/private/ssl-cert-snakeoil.key \
     -out /etc/ssl/certs/ssl-cert-snakeoil.pem \
-  && mkdir /var/www/html/blog \
   && apt-get update && apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
@@ -25,3 +24,5 @@ RUN openssl req \
 
 COPY $subpath/wordpress /var/www/html/$subpath
 COPY $subpath/apache2 /etc/apache2
+
+VOLUME /var/www/html/$subpath
